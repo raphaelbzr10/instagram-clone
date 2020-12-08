@@ -8,6 +8,7 @@ import { BannerComponent } from './acesso/banner/banner.component';
 import { LoginComponent } from './acesso/login/login.component';
 import { CadastroComponent } from './acesso/cadastro/cadastro.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Autenticacao } from './autenticacao.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ Autenticacao ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
