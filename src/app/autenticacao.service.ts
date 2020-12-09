@@ -47,6 +47,10 @@ export class Autenticacao {
             this.token_id = localStorage.getItem('idToken');
         }
 
+        if (this.token_id === undefined) {
+            this.router.navigate(['/']);
+        }
+
         return this.token_id !== undefined;
     }
 
