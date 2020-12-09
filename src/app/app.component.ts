@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
     let firebaseConfig = {
       apiKey: "AIzaSyDL8_b0CV7BQkn4xzljEkOzJvuXeMIj2oQ",
       authDomain: "jta-instagram-clone-de9ee.firebaseapp.com",
+      databaseURL: "https://jta-instagram-clone-de9ee-default-rtdb.firebaseio.com/",
       projectId: "jta-instagram-clone-de9ee",
       storageBucket: "jta-instagram-clone-de9ee.appspot.com",
       messagingSenderId: "875551680230",
