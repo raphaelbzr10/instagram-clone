@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 export class Autenticacao {
 
     public token_id: string;
+    public authError: string;
 
     constructor(private router: Router) {}
 
@@ -26,8 +27,8 @@ export class Autenticacao {
             });
     }
 
-    public autenticar(email: string, senha: string): void {
-        firebase.auth().signInWithEmailAndPassword(email, senha)
+    public autenticar(email: string, senha: string): Promise<any> {
+        return firebase.auth().signInWithEmailAndPassword(email, senha)
             .then((resposta: any) => {
                 firebase.auth().currentUser.getIdToken()
                     .then((idToken: string) => {
@@ -38,6 +39,7 @@ export class Autenticacao {
             })
             .catch((error: any) => {
                 console.log(error);
+                this.authError = error.message;
             })
     }
 

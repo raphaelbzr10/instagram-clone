@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Autenticacao } from '../../autenticacao.service';
 import { Usuario } from '../usuario.model';
 
@@ -13,10 +13,10 @@ export class CadastroComponent implements OnInit {
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter<string>();
 
   public formulario: FormGroup = new FormGroup({
-    'email': new FormControl(null),
-    'nome_completo': new FormControl(null),
-    'nome_usuario': new FormControl(null),
-    'senha': new FormControl(null),
+    'email': new FormControl(null, Validators.required),
+    'nome_completo': new FormControl(null, Validators.required),
+    'nome_usuario': new FormControl(null, Validators.required),
+    'senha': new FormControl(null, Validators.required),
   })
 
   constructor(private authService: Autenticacao) { }

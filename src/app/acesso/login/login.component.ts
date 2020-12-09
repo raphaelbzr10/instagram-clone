@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Autenticacao } from '../../autenticacao.service';
 
 @Component({
@@ -12,9 +12,11 @@ export class LoginComponent implements OnInit {
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter<string>();
 
   public formulario: FormGroup = new FormGroup({
-    'email': new FormControl(null),
-    'senha': new FormControl(null)
+    'email': new FormControl(null, Validators.required),
+    'senha': new FormControl(null, Validators.required)
   });
+
+  public authError: string;
 
   constructor(private autenticacao: Autenticacao) { }
 
@@ -29,7 +31,9 @@ export class LoginComponent implements OnInit {
     this.autenticacao.autenticar(
       this.formulario.value.email,
       this.formulario.value.senha
-    );
+    ).then(() => {
+      this.authError = this.autenticacao.authError;
+    });
   }
 
 }
