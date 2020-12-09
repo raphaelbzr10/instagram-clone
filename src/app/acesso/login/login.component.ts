@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Autenticacao } from '../../autenticacao.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
     'senha': new FormControl(null)
   });
 
-  constructor() { }
+  constructor(private autenticacao: Autenticacao) { }
 
   ngOnInit() {
   }
@@ -25,7 +26,10 @@ export class LoginComponent implements OnInit {
   }
 
   public autenticar(): void {
-    console.log(this.formulario);
+    this.autenticacao.autenticar(
+      this.formulario.value.email,
+      this.formulario.value.senha
+    );
   }
 
 }
