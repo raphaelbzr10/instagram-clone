@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-incluir-publicacao',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IncluirPublicacaoComponent implements OnInit {
 
+  public formulario: FormGroup = new FormGroup({
+    'titulo': new FormControl(null)
+  });
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  public publicar(): void {
+    console.log('chegamos até aqui');
   }
 
 }
