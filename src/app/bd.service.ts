@@ -8,26 +8,28 @@ export class Bd {
     constructor(private progressoService: Progresso) {}
 
     public publicar(publicacao: any): void {
-        // firebase.database().ref(`publicacoes/${btoa(publicacao.email)}`)
-        //     .push({titulo: publicacao.titulo});
-        console.log(publicacao);
 
-        let nomeImagem = Date.now();
+        firebase.database().ref(`publicacoes/${btoa(publicacao.email)}`)
+            .push({titulo: publicacao.titulo})
+            .then((resposta: any) => {
 
-        firebase.storage().ref()
-            .child(`imagens/${nomeImagem}`)
-            .put(publicacao.imagem)
-            .on(firebase.storage.TaskEvent.STATE_CHANGED,
-                (snapshot: any) => {
-                    this.progressoService.status = 'andamento';
-                    this.progressoService.estado = snapshot;
-                },
-                (error) => {
-                    this.progressoService.status = 'erro';
-                },
-                () => {
-                    this.progressoService.status = 'concluido';
-                }
-            )
+                let nomeImagem = resposta.key;
+
+                firebase.storage().ref()
+                    .child(`imagens/${nomeImagem}`)
+                    .put(publicacao.imagem)
+                    .on(firebase.storage.TaskEvent.STATE_CHANGED,
+                        (snapshot: any) => {
+                            this.progressoService.status = 'andamento';
+                            this.progressoService.estado = snapshot;
+                        },
+                        (error) => {
+                            this.progressoService.status = 'erro';
+                        },
+                        () => {
+                            this.progressoService.status = 'concluido';
+                        }
+                    )
+            }); 
     }
 }
