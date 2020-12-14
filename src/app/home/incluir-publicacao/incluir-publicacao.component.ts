@@ -4,6 +4,9 @@ import { Bd } from '../../bd.service';
 
 import * as firebase from 'firebase';
 import { Progresso } from '../../progresso.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
+import { Subject } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-incluir-publicacao',
@@ -34,8 +37,21 @@ export class IncluirPublicacaoComponent implements OnInit {
       imagem: this.imagem[0]
     });
 
-    console.log(this.progressoService.status);
-    console.log(this.progressoService.estado);
+    let acompanhamentoUpload = Observable.interval(1500);
+    let continua = new Subject();
+
+    continua.next(true);
+
+    acompanhamentoUpload
+      .takeUntil(continua)
+      .subscribe(() => {
+        console.log(this.progressoService.status);
+        console.log(this.progressoService.estado);
+
+        if (this.progressoService.status === 'concluido') {
+          continua.next(false);
+        }
+      });
   }
 
   public preparaImagemUpload(event: Event): void {
