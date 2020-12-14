@@ -22,6 +22,9 @@ export class IncluirPublicacaoComponent implements OnInit {
   public email: string;
   private imagem: any;
 
+  public progressoPublicacao: string = 'pendente';
+  public porcentagemUpload: number;
+
   constructor(private bdService: Bd, private progressoService: Progresso) { }
 
   ngOnInit() {
@@ -48,7 +51,12 @@ export class IncluirPublicacaoComponent implements OnInit {
         console.log(this.progressoService.status);
         console.log(this.progressoService.estado);
 
+        this.progressoPublicacao = 'andamento';
+
+        this.porcentagemUpload = Math.round((this.progressoService.estado.bytesTransferred / this.progressoService.estado.totalBytes) * 100);
+
         if (this.progressoService.status === 'concluido') {
+          this.progressoPublicacao = 'concluido';
           continua.next(false);
         }
       });
