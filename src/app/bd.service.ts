@@ -38,6 +38,23 @@ export class Bd {
             .once('value')
             .then((snapshot: any) => {
                 console.log(snapshot.val());
+
+                let publicacoes: any[] = [];
+
+                snapshot.forEach((childSnapshot: any) => {
+
+                    let publicacao = childSnapshot.val();
+
+                    firebase.storage().ref(`imagens/${childSnapshot.key}`)
+                        .getDownloadURL()
+                        .then((url: string) => {
+                            publicacao.url_imagem = url;
+
+                            publicacoes.push(publicacao);
+                        })
+                })
+
+                console.log(publicacoes);
             });
     }
 }
