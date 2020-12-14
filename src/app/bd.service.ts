@@ -33,8 +33,9 @@ export class Bd {
             }); 
     }
 
-    public consultaPublicacoes(emailUsuario: string): any {
-        firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+    public consultaPublicacoes(emailUsuario: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
             .once('value')
             .then((snapshot: any) => {
                 console.log(snapshot.val());
@@ -60,7 +61,8 @@ export class Bd {
                         })
                 })
 
-                console.log(publicacoes);
+                resolve(publicacoes);
             });
+        });
     }
 }
