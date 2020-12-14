@@ -16,6 +16,7 @@ export class IncluirPublicacaoComponent implements OnInit {
   });
 
   public email: string;
+  private imagem: any;
 
   constructor(private bdService: Bd) { }
 
@@ -28,12 +29,13 @@ export class IncluirPublicacaoComponent implements OnInit {
   public publicar(): void {
     this.bdService.publicar({
       email: this.email,
-      titulo: this.formulario.value.titulo
+      titulo: this.formulario.value.titulo,
+      imagem: this.imagem[0]
     });
   }
 
   public preparaImagemUpload(event: Event): void {
-    console.log((<HTMLInputElement>event.target).files);
+    this.imagem = (<HTMLInputElement>event.target).files;
   }
 
 }
