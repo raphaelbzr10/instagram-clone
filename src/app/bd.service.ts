@@ -36,17 +36,26 @@ export class Bd {
     public consultaPublicacoes(emailUsuario: string): Promise<any> {
         return new Promise((resolve, reject) => {
             firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+            .orderByKey()
             .once('value')
             .then((snapshot: any) => {
-                console.log(snapshot.val());
-
                 let publicacoes: any[] = [];
 
                 snapshot.forEach((childSnapshot: any) => {
 
                     let publicacao = childSnapshot.val();
+                    publicacao.key = childSnapshot.key;
 
-                    firebase.storage().ref(`imagens/${childSnapshot.key}`)
+                    publicacoes.push(publicacao);
+                })
+
+                return publicacoes.reverse();
+            })
+            .then((publicacoes: any) => {
+
+                publicacoes.forEach((publicacao: any) => {
+
+                    firebase.storage().ref(`imagens/${publicacao.key}`)
                         .getDownloadURL()
                         .then((url: string) => {
                             publicacao.url_imagem = url;
@@ -55,12 +64,15 @@ export class Bd {
                                 .once('value')
                                 .then((snapshot: any) => {
                                     publicacao.nome_usuario = snapshot.val().nome_usuario;
+                                    let publicacaoEncontrada = publicacoes.find((item) => item === publicacao);
 
-                                    publicacoes.push(publicacao);
+                                    if (!publicacaoEncontrada) {
+                                        publicacoes.push(publicacao);
+                                    }
                                 });
                         })
-                })
 
+                });
                 resolve(publicacoes);
             });
         });
