@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Bd } from '../../bd.service';
 
@@ -18,6 +18,8 @@ export class IncluirPublicacaoComponent implements OnInit {
   public formulario: FormGroup = new FormGroup({
     'titulo': new FormControl(null)
   });
+
+  @Output() public atualizarTimeLine: EventEmitter<any> = new EventEmitter<any>();
 
   public email: string;
   private imagem: any;
@@ -54,6 +56,9 @@ export class IncluirPublicacaoComponent implements OnInit {
 
         if (this.progressoService.status === 'concluido') {
           this.progressoPublicacao = 'concluido';
+
+          this.atualizarTimeLine.emit();
+
           continua.next(false);
         }
       });
